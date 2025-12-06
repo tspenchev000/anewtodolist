@@ -32,6 +32,12 @@ project {
 
     buildType(Test)
     buildType(Build)
+
+    sequential {
+        buildType(Test)
+        buildType(Build)
+
+    }
 }
 
 object Build : BuildType({
@@ -78,8 +84,8 @@ object Test : BuildType({
         }
     }
 
-    dependencies {
-        snapshot(Build) {
-        }
-    }
+//    dependencies {
+//        snapshot(Build) {
+//        }
+//    }
 })
