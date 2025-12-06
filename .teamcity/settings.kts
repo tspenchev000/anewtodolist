@@ -31,7 +31,8 @@ version = "2024.03"
 project {
 
     buildType(Build)
-    buildType(Test)
+    buildType(TestSlow)
+    buildType(TestFast)
     buildType(Package)
 
     sequential {
@@ -53,7 +54,7 @@ object Build : BuildType({
 
     steps {
         script {
-            scriptContent = "echo 'build'"
+            scriptContent = "echo build"
         }
     }
 
@@ -82,16 +83,6 @@ object TestSlow : BuildType({
         }
     }
 
-    features {
-        approval {
-            approvalRules = "user:marcobehlerjetbrains"
-        }
-    }
-
-//    dependencies {
-//        snapshot(Build) {
-//        }
-//    }
 })
 
 object TestFast : BuildType({
@@ -107,13 +98,6 @@ object TestFast : BuildType({
             scriptContent = "echo test fast"
         }
     }
-
-    features {
-        approval {
-            approvalRules = "user:marcobehlerjetbrains"
-        }
-    }
-
 //    dependencies {
 //        snapshot(Build) {
 //        }
@@ -140,7 +124,8 @@ object Package : BuildType({
     }
 
     features {
-        perfmon {
+        approval {
+            approvalRules = "user:tspenchev"
         }
     }
 })
