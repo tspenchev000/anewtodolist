@@ -56,6 +56,11 @@ object Build : BuildType({
         script {
             scriptContent = "echo build"
         }
+        maven {
+            goals = "clean compile"
+            runnerArgs = "-Dmaven.test.failure.ignore=true"
+        }
+
     }
 
     triggers {
@@ -81,6 +86,10 @@ object TestSlow : BuildType({
             id = "simpleRunner"
             scriptContent = "echo test slow"
         }
+        maven {
+            goals = "clean compile"
+            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"
+        }
     }
 
 })
@@ -96,6 +105,10 @@ object TestFast : BuildType({
         script {
             id = "simpleRunner"
             scriptContent = "echo test fast"
+        }
+        maven {
+            goals = "clean compile"
+            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"
         }
     }
 //    dependencies {
@@ -115,6 +128,10 @@ object Package : BuildType({
     steps {
         script {
             scriptContent = "echo package"
+        }
+        maven {
+            goals = "clean package"
+            runnerArgs = "-Dmaven.test.failure.ignore=true"
         }
     }
 
