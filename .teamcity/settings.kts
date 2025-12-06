@@ -30,18 +30,22 @@ version = "2024.03"
 
 project {
 
-    buildType(Test)
     buildType(Build)
+    buildType(Test)
+    buildType(Package)
 
     sequential {
-        buildType(Test)
         buildType(Build)
-
+        parralel {
+            buildType(TestSlow)
+            buildType(TestFast)
+        }
+        buildType(Package)
     }
 }
 
 object Build : BuildType({
-    name = "Build"
+    name = "build"
 
     vcs {
         root(DslContext.settingsRoot)
@@ -64,8 +68,8 @@ object Build : BuildType({
     }
 })
 
-object Test : BuildType({
-    name = "test"
+object TestSlow : BuildType({
+    name = "test slow"
 
     vcs {
         root(DslContext.settingsRoot)
@@ -74,7 +78,7 @@ object Test : BuildType({
     steps {
         script {
             id = "simpleRunner"
-            scriptContent = "echo 'manual'"
+            scriptContent = "echo test slow"
         }
     }
 
@@ -88,4 +92,55 @@ object Test : BuildType({
 //        snapshot(Build) {
 //        }
 //    }
+})
+
+object TestFast : BuildType({
+    name = "test fast"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        script {
+            id = "simpleRunner"
+            scriptContent = "echo test fast"
+        }
+    }
+
+    features {
+        approval {
+            approvalRules = "user:marcobehlerjetbrains"
+        }
+    }
+
+//    dependencies {
+//        snapshot(Build) {
+//        }
+//    }
+})
+
+
+object Package : BuildType({
+    name = "package"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        script {
+            scriptContent = "echo package"
+        }
+    }
+
+    triggers {
+        vcs {
+        }
+    }
+
+    features {
+        perfmon {
+        }
+    }
 })
