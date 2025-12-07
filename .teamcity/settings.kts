@@ -72,6 +72,7 @@ project {
     }
 }
 
+
 object VcsRoot : GitVcsRoot({
     name = DslContext.getParameter("vcsName")
     url = DslContext.getParameter("vcsUrl")
@@ -98,7 +99,6 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
             this.goals = strGoals
             this.runnerArgs = strRunnerArgs
         }
-
     }
 
     //features {
