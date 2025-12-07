@@ -72,7 +72,6 @@ project {
     }
 }
 
-
 object VcsRoot : GitVcsRoot({
     name = DslContext.getParameter("vcsName")
     url = DslContext.getParameter("vcsUrl")
