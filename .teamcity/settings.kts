@@ -73,9 +73,9 @@ project {
 }
 
 object VcsRoot : GitVcsRoot({
-    name = ""
-    url = ""
-    branch = "refs/heads/master"
+    name = DslContext.getParameter("vcsName")
+    url = DslContext.getParameter("vcsUrl")
+    branch = DslContext.getParameter("vcsBranch", "refs/heads/master")
 })
 
 class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) : BuildType({
