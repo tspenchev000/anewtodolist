@@ -1,9 +1,11 @@
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildFeatures.approval
-import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
+//import jetbrains.buildServer.configs.kotlin.buildFeatures.CommitStatusPublisher
+//import jetbrains.buildServer.configs.kotlin.buildFeatures.approval
+//import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -30,120 +32,58 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2024.03"
 
 project {
-
-    buildType(Build)
-    buildType(TestSlow)
-    buildType(TestFast)
-    buildType(Package)
-
+    val bts =
     sequential {
-        buildType(Build)
+        buildType(Maven("Build", "clean compile"))
         parallel {
-            buildType(TestSlow)
-            buildType(TestFast)
+            buildType(Maven("Test Slow", "clean test", "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"))
+            buildType(Maven("Fast Slow", "clean test", "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"))
         }
-        buildType(Package)
+        buildType(Maven("Package", "clean package", "-DskipTests"))
+    }.buildTypes()
+
+    bts.forEach {buildType(it)}
+    bts.last().triggers{
+        vcs{
+
+        }
     }
 }
 
-object Build : BuildType({
-    name = "build"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        script {
-            scriptContent = "echo build"
-        }
-        maven {
-            goals = "clean compile"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
-
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
+object VcsRoot : GitVcsRoot({
+    name = ""
+    url = ""
+    branch = "refs/heads/master"
 })
 
-object TestSlow : BuildType({
-    name = "test slow"
+class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) : BuildType({
+    //id(name.toExtId())
+    this.name = strName
 
     vcs {
-        root(DslContext.settingsRoot)
+        root(VcsRoot)
     }
 
     steps {
         script {
-            id = "simpleRunner"
-            scriptContent = "echo test slow"
+            scriptContent = "echo $strName"
         }
         maven {
-            goals = "clean compile"
-            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.unit.*Test"
+            this.goals = strGoals
+            this.runnerArgs = strRunnerArgs
         }
+
     }
 
-})
+    //features {
+    //    perfmon {
+    //    }
+    //}
 
-object TestFast : BuildType({
-    name = "test fast"
+    //features {
+    //    approval {
+    //        approvalRules = "user:tspenchev"
+    //    }
+    //}
 
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        script {
-            id = "simpleRunner"
-            scriptContent = "echo test fast"
-        }
-        maven {
-            goals = "clean compile"
-            runnerArgs = "-Dmaven.test.failure.ignore=true -Dtest=*.integration.*Test"
-        }
-    }
-//    dependencies {
-//        snapshot(Build) {
-//        }
-//    }
-})
-
-
-object Package : BuildType({
-    name = "package"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        script {
-            scriptContent = "echo package"
-        }
-        maven {
-            goals = "clean package"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        approval {
-            approvalRules = "user:tspenchev"
-        }
-    }
 })
