@@ -76,7 +76,7 @@ object VcsRoot : GitVcsRoot({
 })
 
 class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) : BuildType({
-    id(strName.toExtId())
+    id(strName.toId())
     this.name = strName
 
     vcs {
