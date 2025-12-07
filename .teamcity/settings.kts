@@ -51,6 +51,9 @@ fun String.toExtId(): String {
 
 
 project {
+
+    vcsRoot(VcsRoot)
+
     val bts =
     sequential {
         buildType(Maven("Build", "clean compile"))
