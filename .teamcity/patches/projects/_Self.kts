@@ -14,5 +14,8 @@ changeProject(DslContext.projectId) {
         add {
             param("vcsName", "TestGitme")
         }
+        add {
+            param("vcsUrl", "https://github.com/tspenchev000/anewtodolist")
+        }
     }
 }
