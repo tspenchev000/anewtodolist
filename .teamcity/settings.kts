@@ -91,8 +91,6 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
         script {
             scriptContent = """
             echo "Step name: $strName"
-            echo "Build ID:  ".$DslContext.getParameter("vcsUrl")
-            #echo "Project: %teamcity.project.name%"
         """.trimIndent()
         }
         maven {
