@@ -75,7 +75,7 @@ project {
 object xVcsRoot : GitVcsRoot({
     name = DslContext.getParameter("vcsName")
     url = DslContext.getParameter("vcsUrl")
-    branch = DslContext.getParameter("vcsBranch", "refs/heads/master")
+    branch = DslContext.getParameter("vcsBranch", "refs/heads/main")
 })
 
 class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) : BuildType({
