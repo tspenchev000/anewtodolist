@@ -97,6 +97,7 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
         script {
             scriptContent = """
             echo "##teamcity[setParameter name='env.GIT_COMMIT_HASH' value='%build.vcs.number%']"
+            echo "##teamcity[setParameter name='teamcity.build.output.git_hash' value='%build.vcs.number%']"
             echo "Step name: $strName"
             echo "Build ID:  $strBuildId"
         """.trimIndent()
