@@ -87,10 +87,13 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
         root(xVcsRoot)
     }
 
+    val strBuildId = DslContext.getParameter("vcsUrl")
+
     steps {
         script {
             scriptContent = """
             echo "Step name: $strName"
+            echo "Build ID:  $strBuildId"
         """.trimIndent()
         }
         maven {
