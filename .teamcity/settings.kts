@@ -87,7 +87,7 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
         root(xVcsRoot)
     }
 
-    val strBuildId = DslContext.getParameter("vcsUrl")
+    val strBuildId = DslContext.getParameter("tcBuildId")
 
     steps {
         script {
