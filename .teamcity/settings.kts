@@ -70,7 +70,7 @@ project {
 
         }
     }
-    bts.last().artifactRules = "target/*.jar"
+    bts.last().artifactRules = "target/*.jar => app"
 }
 
 object xVcsRoot : GitVcsRoot({
