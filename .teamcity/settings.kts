@@ -52,7 +52,7 @@ fun String.toExtId(): String {
 
 project {
 
-    vcsRoot(xVcsRoot)
+    vcsRoot(XVcsRoot)
 
     val bts =
     sequential {
@@ -73,7 +73,7 @@ project {
     bts.last().artifactRules = "target/*.jar => app"
 }
 
-object xVcsRoot : GitVcsRoot({
+object XVcsRoot : GitVcsRoot({
     name = DslContext.getParameter("vcsName")
     url = DslContext.getParameter("vcsUrl")
     branch = DslContext.getParameter("vcsBranch", "refs/heads/main")
@@ -84,7 +84,11 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
     this.name = strName
 
     vcs {
-        root(xVcsRoot)
+        root(XVcsRoot)
+    }
+
+    params {
+        param("env.GIT_COMMIT_HASH", "")
     }
 
     val strBuildId = DslContext.getParameter("tcBuildId")
@@ -92,6 +96,7 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
     steps {
         script {
             scriptContent = """
+            echo "##teamcity[setParameter name='env.GIT_COMMIT_HASH' value='%build.vcs.number%']"
             echo "Step name: $strName"
             echo "Build ID:  $strBuildId"
         """.trimIndent()
