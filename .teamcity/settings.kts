@@ -91,8 +91,8 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
         script {
             scriptContent = """
             echo "Step name: $strName"
-            #echo "Build ID: %%teamcity.build.id%%"
-            #echo "Project: %%teamcity.project.name%%"
+            echo "Build ID: %teamcity.build.id%"
+            echo "Project: %teamcity.project.name%"
         """.trimIndent()
         }
         maven {
