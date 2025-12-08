@@ -52,7 +52,7 @@ fun String.toExtId(): String {
 
 project {
 
-    vcsRoot(VcsRoot)
+    vcsRoot(xVcsRoot)
 
     val bts =
     sequential {
@@ -72,7 +72,7 @@ project {
     }
 }
 
-object VcsRoot : GitVcsRoot({
+object xVcsRoot : GitVcsRoot({
     name = DslContext.getParameter("vcsName")
     url = DslContext.getParameter("vcsUrl")
     branch = DslContext.getParameter("vcsBranch", "refs/heads/master")
@@ -83,7 +83,7 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
     this.name = strName
 
     vcs {
-        root(VcsRoot)
+        root(xVcsRoot)
     }
 
     steps {
