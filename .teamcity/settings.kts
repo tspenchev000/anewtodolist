@@ -118,8 +118,8 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
             echo "##teamcity[setParameter name='teamcity.build.output.git_hash' value='%build.vcs.number%']"
             echo "Step name: $strName"
             echo "Build ID:  $strBuildId"
-            echo "Env DB_USER:${'$'}{'$'}DB_USER"
-            echo "Env DB_PASS:${'$'}{'$'}DB_PASS"            
+            echo "Env DB_USER:${'$'}DB_USER"
+            echo "Env DB_PASS:${'$'}DB_PASS"            
         """.trimIndent()
         }
         maven {
