@@ -4,6 +4,7 @@ import jetbrains.buildServer.configs.kotlin.*
 //import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.remoteParameters.hashiCorpVaultParameter
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
@@ -89,7 +90,24 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
 
     params {
         param("env.GIT_COMMIT_HASH", "")
+
+        hashiCorpVaultParameter {
+            name = "env.DB_USER"
+            query = "/teamcity-zone18/data/projectx!/user"
+            vaultId = "vaultteamcity"
+            param("buildTypeId", "Dockerme_AfterJar")
+        }
+        hashiCorpVaultParameter {
+            name = "env.DB_PASS"
+            query = "/teamcity-zone18/data/projectx!/pass"
+            vaultId = "vaultteamcity"
+            param("buildTypeId", "Dockerme_AfterJar")
+        }
+
+
     }
+
+
 
     val strBuildId = DslContext.getParameter("tcBuildId")
 
@@ -100,6 +118,8 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
             echo "##teamcity[setParameter name='teamcity.build.output.git_hash' value='%build.vcs.number%']"
             echo "Step name: $strName"
             echo "Build ID:  $strBuildId"
+            echo "Env DB_USER:${'$'}{'$'}DB_USER"
+            echo "Env DB_PASS:${'$'}{'$'}DB_PASS"            
         """.trimIndent()
         }
         maven {
