@@ -95,13 +95,13 @@ class Maven(strName: String, strGoals: String, strRunnerArgs: String ? = null) :
             name = "env.DB_USER"
             query = "/teamcity-zone18/data/projectx!/user"
             vaultId = "vaultteamcity"
-            param("buildTypeId", "Dockerme_AfterJar")
+            //param("buildTypeId", "Dockerme_AfterJar")
         }
         hashiCorpVaultParameter {
             name = "env.DB_PASS"
             query = "/teamcity-zone18/data/projectx!/pass"
             vaultId = "vaultteamcity"
-            param("buildTypeId", "Dockerme_AfterJar")
+            //param("buildTypeId", "Dockerme_AfterJar")
         }
 
 
